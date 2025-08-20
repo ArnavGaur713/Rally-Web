@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, MapPin, Users, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface EventCardProps {
   id: string;
@@ -26,6 +27,7 @@ interface EventCardProps {
 }
 
 const EventCard = ({ 
+  id,
   title, 
   sport, 
   date, 
@@ -161,9 +163,11 @@ const EventCard = ({
         </div>
 
         {/* Action Button */}
-        <Button className="w-full gradient-primary text-primary-foreground hover:opacity-90 transition-opacity">
-          Join Rally 🎉
-        </Button>
+        <Link to={`/checkout/${id}`}>
+          <Button className="w-full gradient-primary text-primary-foreground hover:opacity-90 transition-opacity">
+            Join Rally 🎉
+          </Button>
+        </Link>
       </div>
     </div>
   );
