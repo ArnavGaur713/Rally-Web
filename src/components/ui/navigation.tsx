@@ -15,7 +15,7 @@ const Navigation = () => {
               <span className="text-primary-foreground font-bold text-lg">🎾</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-primary">
                 PlayPal Rally
               </h1>
               <p className="text-xs text-muted-foreground">Your sport, your squad, your vibe</p>

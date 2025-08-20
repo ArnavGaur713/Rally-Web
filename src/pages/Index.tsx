@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, TrendingUp, Users } from "lucide-react";
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
 
 const Index = () => {
@@ -89,13 +90,17 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 animate-fade-slide-up">
-              <Button size="lg" className="gradient-primary text-primary-foreground hover:opacity-90 shadow-glow animate-pulse-glow">
-                <Sparkles className="w-5 h-5 mr-2" />
-                Find My Game
-              </Button>
-              <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
-                How It Works
-              </Button>
+              <Link to="/find-my-game">
+                <Button size="lg" className="gradient-primary text-primary-foreground hover:opacity-90 shadow-glow animate-pulse-glow">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Find My Game
+                </Button>
+              </Link>
+              <Link to="/how-it-works">
+                <Button size="lg" variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
+                  How It Works
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
