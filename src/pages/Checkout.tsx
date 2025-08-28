@@ -4,6 +4,15 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, MapPin, Clock, Users, Star, CreditCard } from "lucide-react";
+import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
+import { mockEvents } from "@/data/mockEvents";
+import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { ArrowLeft, MapPin, Clock, Users, Star, CreditCard } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { mockEvents } from "@/data/mockEvents";
 import { useState } from "react";
@@ -12,6 +21,12 @@ const Checkout = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const [selectedSlot, setSelectedSlot] = useState<string>("");
+  const { user } = useAuth();
+  
+  // Redirect if not logged in
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
   
   const event = mockEvents.find(e => e.id === eventId);
   

@@ -5,15 +5,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, CreditCard, Shield, Lock } from "lucide-react";
-import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useParams, useNavigate, useSearchParams, Navigate } from "react-router-dom";
 import { mockEvents } from "@/data/mockEvents";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Payment = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const selectedSlot = searchParams.get('slot') || '';
+  const { user } = useAuth();
+  const { toast } = useToast();
+  
+  // Redirect if not logged in
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentForm, setPaymentForm] = useState({
@@ -21,7 +31,7 @@ const Payment = () => {
     expiryDate: '',
     cvv: '',
     name: '',
-    email: ''
+    email: user?.email || ''
   });
   
   const event = mockEvents.find(e => e.id === eventId);
@@ -46,17 +56,57 @@ const Payment = () => {
 
   const handlePayment = async () => {
     if (!paymentForm.cardNumber || !paymentForm.expiryDate || !paymentForm.cvv || !paymentForm.name || !paymentForm.email) {
-      alert("Please fill in all fields");
+      toast({
+        title: "Missing information",
+        description: "Please fill in all fields",
+        variant: "destructive"
+      });
       return;
     }
 
     setIsProcessing(true);
     
-    // Mock payment processing delay
-    setTimeout(() => {
-      setIsProcessing(false);
+    try {
+      // Mock payment processing delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Save event to user's account
+      const { error } = await supabase
+        .from('user_events')
+        .insert({
+          user_id: user!.id,
+          event_id: eventId!,
+          event_title: event!.title,
+          event_type: event!.sport,
+          event_date: event!.date,
+          event_location: event!.location,
+          event_price: event!.price
+        });
+
+      if (error) {
+        toast({
+          title: "Error saving event",
+          description: error.message,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Payment successful!",
+        description: "You've successfully joined the event."
+      });
+
       navigate(`/confirmation/${eventId}?slot=${encodeURIComponent(selectedSlot)}`);
-    }, 3000);
+    } catch (error) {
+      toast({
+        title: "Payment failed",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const totalAmount = (event.price + 2.99).toFixed(2);
