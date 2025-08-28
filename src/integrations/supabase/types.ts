@@ -14,7 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_events: {
+        Row: {
+          event_date: string
+          event_id: string
+          event_location: string
+          event_price: number
+          event_title: string
+          event_type: string
+          id: string
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          event_date: string
+          event_id: string
+          event_location: string
+          event_price?: number
+          event_title: string
+          event_type: string
+          id?: string
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          event_date?: string
+          event_id?: string
+          event_location?: string
+          event_price?: number
+          event_title?: string
+          event_type?: string
+          id?: string
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
